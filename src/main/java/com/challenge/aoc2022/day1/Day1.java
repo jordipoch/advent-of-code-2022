@@ -13,7 +13,7 @@ public class Day1 {
             day1.runPart1();
             day1.runPart2();
         } catch(ExecutionException e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
         }
     }
 
