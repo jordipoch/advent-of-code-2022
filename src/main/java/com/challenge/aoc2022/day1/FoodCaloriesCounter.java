@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.challenge.library.lists.ListSplitter.splitAndConvertList;
@@ -19,13 +20,35 @@ public class FoodCaloriesCounter {
         this.calories = calories;
     }
 
-    public int calculateMaxCaloriesCarriedByAnElf() {
+    public int calculateMax() {
         logger.debug("Calculating max calories from calory list: {}", calories);
 
         return calories.stream()
                 .mapToInt(l -> l.stream().mapToInt(Integer::intValue).sum())
                 .max()
                 .orElse(0);
+    }
+
+    public int calculateTopNSum(int n) throws FoodCaloriesCounterException {
+        checkN(n);
+
+        return calories.stream()
+                .mapToInt(l -> l.stream().mapToInt(Integer::intValue).sum())
+                .boxed()
+                .sorted(Comparator.reverseOrder())
+                .limit(n)
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
+
+    private void checkN(int n) throws FoodCaloriesCounterException {
+        if (n <= 0) {
+            throw new FoodCaloriesCounterException(String.format("Value provided to calculate Top N sum (%d) should be larger than 0", n));
+        }
+
+        if (n > calories.size()) {
+            throw new FoodCaloriesCounterException(String.format("Value provided to calculate Top N sum (%d) is larger than list size (%d)", n, calories.size()));
+        }
     }
 
     public static Builder builder() {

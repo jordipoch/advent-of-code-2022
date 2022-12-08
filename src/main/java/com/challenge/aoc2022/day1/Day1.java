@@ -11,6 +11,7 @@ public class Day1 {
         var day1 = new Day1();
         try {
             day1.runPart1();
+            day1.runPart2();
         } catch(ExecutionException e) {
             logger.error(e.getMessage());
         }
@@ -21,11 +22,24 @@ public class Day1 {
             var foodCaloriesCounter = FoodCaloriesCounter.builder()
                     .withFilename("input.txt")
                     .build();
-            var maxCalories = foodCaloriesCounter.calculateMaxCaloriesCarriedByAnElf();
+            var maxCalories = foodCaloriesCounter.calculateMax();
             logger.info("Max calories = {}", maxCalories);
             return maxCalories;
         } catch (FoodCaloriesCounterException e) {
             throw new ExecutionException("Error running day 1 part 1", e);
+        }
+    }
+
+    int runPart2() throws ExecutionException {
+        try {
+            var foodCaloriesCounter = FoodCaloriesCounter.builder()
+                    .withFilename("input.txt")
+                    .build();
+            var sumCalories = foodCaloriesCounter.calculateTopNSum(3);
+            logger.info("Sum Top N calories = {}", sumCalories);
+            return sumCalories;
+        } catch (FoodCaloriesCounterException e) {
+            throw new ExecutionException("Error running day 1 part 2", e);
         }
     }
 }
