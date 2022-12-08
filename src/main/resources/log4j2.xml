@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <Property name="filename">target/aoc2021.log</Property>
+        <Property name="filename">target/aoc2022.log</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
@@ -15,6 +15,6 @@
         <Root level="info">
             <AppenderRef ref="File"/>
         </Root>
-        <Logger name="com.challenge.aoc2022.day1" level="info" />
+        <Logger name="com.challenge.aoc2022.day1" level="trace" />
     </Loggers>
 </Configuration>
