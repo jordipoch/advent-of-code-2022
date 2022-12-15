@@ -32,7 +32,8 @@ public class RockPaperScissorsGame {
     public static class Builder {
         private static final String SPACE = " ";
         private static final Path RESOURCE_PATH = Path.of("resources", "com", "challenge", "aoc2022", "day2");
-        List<String> stringPlays;
+        private List<String> stringPlays;
+        private boolean isInputStrategy = false;
         private Path path = Path.of("src", "main").resolve(RESOURCE_PATH);
 
         public static RockPaperScissorsGame createFrom(String... plays) {
@@ -41,13 +42,20 @@ public class RockPaperScissorsGame {
                     .build();
         }
 
-        public Builder fromPlaysList(List<String> plays) {
-            this.stringPlays = plays;
-            return this;
+        public static RockPaperScissorsGame createFromStrategies(String... strategies) {
+            return RockPaperScissorsGame.builder()
+                    .fromPlaysList(List.of(strategies))
+                    .inputIsStrategy()
+                    .build();
         }
 
         public Builder isTest() {
             path = Path.of("src", "test").resolve(RESOURCE_PATH);
+            return this;
+        }
+
+        public Builder fromPlaysList(List<String> plays) {
+            this.stringPlays = plays;
             return this;
         }
 
@@ -60,6 +68,11 @@ public class RockPaperScissorsGame {
             }
         }
 
+        public Builder inputIsStrategy() {
+            this.isInputStrategy = true;
+            return this;
+        }
+
         public RockPaperScissorsGame build() {
             return new RockPaperScissorsGame(createPlayList());
         }
@@ -67,8 +80,17 @@ public class RockPaperScissorsGame {
         private List<Play> createPlayList() {
             return stringPlays.stream()
                     .map(s -> s.split(SPACE))
-                    .map(a -> Play.of(a[0], a[1]))
+                    .map(a -> createPlay(a[0], a[1]))
                     .toList();
         }
+
+        private Play createPlay(String param1, String param2) {
+            if (isInputStrategy) {
+                return Play.ofStrategy(PlayStrategy.of(param1, param2));
+            } else {
+                return Play.of(param1, param2);
+            }
+        }
+
     }
 }

@@ -11,6 +11,7 @@ public class Day2 {
         var day2 = new Day2();
         try {
             day2.runPart1();
+            day2.runPart2();
         } catch (ExecutionException e) {
             logger.error(e.getMessage(), e);
         }
@@ -26,6 +27,20 @@ public class Day2 {
             return score;
         } catch (RockPaperScissorsGameException e) {
             throw new ExecutionException("Error running day 2 part 1", e);
+        }
+    }
+
+    public int runPart2() throws ExecutionException {
+        try {
+            var game = RockPaperScissorsGame.builder()
+                    .fromFile("input.txt")
+                    .inputIsStrategy()
+                    .build();
+            var score = game.calculateGameScore();
+            logger.info("Rock/Paper/Scissors tournament score following elves' instructions = {}", score);
+            return score;
+        } catch (RockPaperScissorsGameException e) {
+            throw new ExecutionException("Error running day 2 part 2", e);
         }
     }
 }
