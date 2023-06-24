@@ -13,6 +13,7 @@ public class Day3 {
         var day3 = new Day3();
         try {
             day3.runPart1();
+            day3.runPart2();
         } catch (ExecutionException e) {
             logger.error(e.getMessage(), e);
         }
@@ -30,4 +31,18 @@ public class Day3 {
             throw new ExecutionException("Error running day 3 part 1", e);
         }
     }
+
+    public int runPart2() throws ExecutionException {
+        try {
+            var foodSupplies = aFoodSupplies()
+                    .items("input.txt")
+                    .build();
+            int sum = foodSupplies.calculateSumOfGroupBadgePriorities();
+            logger.info("Sum of priorities of item types of three-Elf groups = {}", sum);
+            return sum;
+        } catch (FoodSuppliesException e) {
+            throw new ExecutionException("Error running day 3 part 2", e);
+        }
+    }
+
 }

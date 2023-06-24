@@ -1,7 +1,6 @@
 package com.challenge.aoc2022.day2;
 
 import com.challenge.aoc2022.exception.ExecutionException;
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

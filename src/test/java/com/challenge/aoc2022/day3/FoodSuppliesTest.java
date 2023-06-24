@@ -21,11 +21,10 @@ public class FoodSuppliesTest {
     }
 
     private FoodSupplies createFoodSupplies() throws FoodSuppliesException {
-        var foodSupplies = FoodSupplies.Builder.aFoodSupplies()
+        return FoodSupplies.Builder.aFoodSupplies()
                 .test()
                 .items("example_input.txt")
                 .build();
-        return foodSupplies;
     }
 
 
