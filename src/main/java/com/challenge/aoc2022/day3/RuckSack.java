@@ -1,8 +1,13 @@
 package com.challenge.aoc2022.day3;
 
 import com.challenge.aoc2022.day3.exception.RuckSackException;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static com.challenge.aoc2022.day3.RuckSackCompartment.Builder.ofItems;
 
@@ -23,6 +28,15 @@ public class RuckSack {
                 .findFirst()
                 .map(this::getItemPriority)
                 .orElseThrow(() -> new RuckSackException(this));
+    }
+
+    public boolean hasItem(Character item) {
+        return stream().anyMatch(c -> c.equals(item));
+    }
+
+    public Stream<Character> stream() {
+        return Stream.of(compartment1.stream(), compartment2.stream())
+                .flatMap(Function.identity());
     }
 
     private int getItemPriority(char item) {
@@ -50,6 +64,22 @@ public class RuckSack {
         return "("
                 + compartment1 + " | "
                 + compartment2 + ");";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RuckSack ruckSack = (RuckSack) o;
+
+        return new EqualsBuilder().append(compartment1, ruckSack.compartment1).append(compartment2, ruckSack.compartment2).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(compartment1).append(compartment2).toHashCode();
     }
 
     public static class Builder {

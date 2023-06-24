@@ -2,6 +2,7 @@ package com.challenge.aoc2022.day3;
 
 import com.challenge.aoc2022.day3.exception.FoodSuppliesException;
 import com.challenge.library.files.TextFileReader;
+import org.apache.commons.collections4.ListUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,6 +19,19 @@ public class FoodSupplies {
         return rucksacks.stream()
                 .mapToInt(RuckSack::calculatePriorityOfRepeatedElement)
                 .sum();
+    }
+
+    public int calculateSumOfGroupBadgePriorities() {
+        var ruckSackGroups = splitInGroups(rucksacks, 3);
+        return ruckSackGroups.stream()
+                .mapToInt(RuckSackGroup::getBadgePriority)
+                .sum();
+    }
+
+    private List<RuckSackGroup> splitInGroups(List<RuckSack> rucksacks, int groupSize) {
+        return ListUtils.partition(rucksacks, groupSize).stream()
+                .map(RuckSackGroup.Builder::createRuckSackGroup)
+                .toList();
     }
 
     public static class Builder {
