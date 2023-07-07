@@ -20,6 +20,12 @@ public class AssignmentPairsContainer {
                 .count();
     }
 
+    public int calculateNumberOfOverlappingAssignmentPairs() {
+        return (int) assignmentPairs.stream()
+                .filter(AssignmentPair::areRangesOverlapped)
+                .count();
+    }
+
     public static Builder builder() {
         return new Builder();
     }

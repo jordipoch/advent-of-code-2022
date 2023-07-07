@@ -18,11 +18,7 @@ public class AssignmentPair {
         return range1.contains(range2) || range2.contains(range1);
     }
 
-    public SectionRange getRange1() {
-        return range1;
-    }
-
-    public SectionRange getRange2() {
-        return range2;
+    public boolean areRangesOverlapped() {
+        return range1.overlapsWith(range2);
     }
 }

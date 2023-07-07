@@ -18,6 +18,15 @@ public final class SectionRange {
         return min <= another.min && max >= another.max;
     }
 
+    public boolean overlapsWith(SectionRange another) {
+        return contains(another) || another.contains(this) ||
+                containsValue(another.min) || containsValue(another.max);
+    }
+
+    private boolean containsValue(int value) {
+        return value >= min && value <= max;
+    }
+
     @Override
     public String toString() {
         return '[' +
