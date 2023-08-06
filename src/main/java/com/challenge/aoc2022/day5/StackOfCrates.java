@@ -26,6 +26,10 @@ public class StackOfCrates {
         return crates.isEmpty();
     }
 
+    public Character peekCrate() {
+        return crates.peek();
+    }
+
     public Character popCrate() {
         return crates.pop();
     }

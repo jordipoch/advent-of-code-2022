@@ -1,31 +1,47 @@
 package com.challenge.aoc2022.day5;
 
+import com.challenge.aoc2022.day5.exception.ShipSuppliesCreationException;
+import com.challenge.aoc2022.day5.exception.ShipSuppliesFileParserException;
+
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class ShipsSupplies {
+import static java.util.function.Predicate.not;
+
+public class ShipSupplies {
     private final List<StackOfCrates> crates;
 
-    public ShipsSupplies(List<StackOfCrates> crates) {
+    public ShipSupplies(List<StackOfCrates> crates) {
         this.crates = crates;
     }
 
-    public Character getCrateFromStack(int stackNum) {
+    public Character popCrateFromStack(int stackNum) {
         checkStackNumber(stackNum);
         checkStackNotEmpty(stackNum);
 
         return crates.get(stackNum - 1).popCrate();
     }
 
-    public void putCrateOnTopOfStack(Character crate, int stackNum) {
+    public void pushCrateToStack(Character crate, int stackNum) {
         checkStackNumber(stackNum);
 
         crates.get(stackNum - 1).pushCrate(crate);
     }
+
+    public String getTopCratesFromStacks() {
+        return crates.stream()
+                .filter(not(StackOfCrates::isEmpty))
+                .map(StackOfCrates::peekCrate)
+                .map(Objects::toString)
+                .collect(Collectors.joining());
+    }
+
 
     private void checkStackNumber(int stackNum) {
         if (stackNum < 1 || stackNum > crates.size()) {
@@ -52,14 +68,35 @@ public class ShipsSupplies {
     }
 
     public static class Builder {
-        private final List<StackOfCrates> crates = new ArrayList<>();
+        private static final Path RESOURCE_PATH = Path.of("resources", "com", "challenge", "aoc2022", "day5");
+        private static final Path TEST = Path.of("src", "test");
+        private Path path = Path.of("src", "main").resolve(RESOURCE_PATH);
+        private List<StackOfCrates> crates = new ArrayList<>();
 
-        public Builder withStackOfCrates(String cratesAsString) {
+
+        public Builder addStackOfCrates(String cratesAsString) {
             this.crates.add(StackOfCrates.of(cratesAsString));
             return this;
         }
-        public ShipsSupplies build() {
-            return new ShipsSupplies(crates);
+
+        public Builder forTest() {
+            path = TEST.resolve(RESOURCE_PATH);
+            return this;
+        }
+        public Builder fromFile(Path filePath) throws ShipSuppliesCreationException {
+            var parser = ShipSuppliesFileParser.of(filePath);
+            try {
+                crates = parser.parse().stream()
+                        .map(StackOfCrates::of)
+                        .toList();
+            } catch (ShipSuppliesFileParserException e) {
+                throw new ShipSuppliesCreationException("Error creating ship supplies from file", e);
+            }
+            return this;
+        }
+
+        public ShipSupplies build() {
+            return new ShipSupplies(crates);
         }
     }
 
