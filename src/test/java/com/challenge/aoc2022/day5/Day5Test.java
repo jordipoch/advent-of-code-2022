@@ -12,4 +12,10 @@ public class Day5Test {
         Day5 day5 = new Day5();
         assertThat(day5.runPart1()).isEqualTo("QMBMJDFTD");
     }
+
+    @Test
+    public void testRunPart2() throws ExecutionException {
+        Day5 day5 = new Day5();
+        assertThat(day5.runPart2()).isEqualTo("NBTVTJNFJ");
+    }
 }

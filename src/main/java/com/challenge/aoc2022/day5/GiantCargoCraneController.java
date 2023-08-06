@@ -1,5 +1,7 @@
 package com.challenge.aoc2022.day5;
 
+import com.challenge.aoc2022.day5.crane.GiantCargoCrane;
+import com.challenge.aoc2022.day5.crane.GiantCargoCraneType;
 import com.challenge.aoc2022.day5.exception.GiantCargoCraneControllerException;
 import com.challenge.aoc2022.day5.exception.ShipSuppliesCreationException;
 import com.challenge.library.files.TextFileReader;
@@ -10,7 +12,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-import static com.challenge.aoc2022.day5.GiantCargoCraneType.CRATE_MOVER_9000;
+import static com.challenge.aoc2022.day5.crane.GiantCargoCraneType.CRATE_MOVER_9000;
 
 public class GiantCargoCraneController {
     private static final Logger logger = LogManager.getLogger();

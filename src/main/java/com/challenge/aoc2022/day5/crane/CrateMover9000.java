@@ -1,10 +1,11 @@
-package com.challenge.aoc2022.day5;
+package com.challenge.aoc2022.day5.crane;
 
-public class CrateMover9000 implements GiantCargoCrane {
-    private final ShipSupplies shipSupplies;
+import com.challenge.aoc2022.day5.CraneInstruction;
+import com.challenge.aoc2022.day5.ShipSupplies;
 
+class CrateMover9000 extends CrateMover {
     private CrateMover9000(ShipSupplies shipSupplies) {
-        this.shipSupplies = shipSupplies;
+        super(shipSupplies);
     }
 
     public static CrateMover9000 of(ShipSupplies shipSupplies) {
@@ -17,15 +18,5 @@ public class CrateMover9000 implements GiantCargoCrane {
             var crate = shipSupplies.popCrateFromStack(instruction.origin());
             shipSupplies.pushCrateToStack(crate, instruction.destination());
         }
-    }
-
-    @Override
-    public String getTopMostCrates() {
-        return shipSupplies.getTopCratesFromStacks();
-    }
-
-    @Override
-    public String toString() {
-        return shipSupplies.toString();
     }
 }
