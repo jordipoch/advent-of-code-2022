@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.challenge.aoc2022.day5.GiantCargoCraneType.CRATE_MOVER_9000;
+
 public class GiantCargoCraneController {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final GiantCargoCrane cargoCrane;
     private final List<CraneInstruction> instructions;
 
@@ -35,16 +37,22 @@ public class GiantCargoCraneController {
         private static final Path RESOURCE_PATH = Path.of("resources", "com", "challenge", "aoc2022", "day5");
         private static final Path TEST = Path.of("src", "test");
         private Path path = Path.of("src", "main").resolve(RESOURCE_PATH);
-        private GiantCargoCrane cargoCrane;
+        private ShipSupplies shipSupplies;
         private List<CraneInstruction> instructions;
+
+        private GiantCargoCraneType craneType = CRATE_MOVER_9000;
 
         public Builder forTest() {
             path = TEST.resolve(RESOURCE_PATH);
             return this;
         }
+
+        public Builder withCraneType(GiantCargoCraneType craneType) {
+            this.craneType = craneType;
+            return this;
+        }
         public Builder withSupplies(String filename) throws GiantCargoCraneControllerException {
-            var shipSupplies = createShipSupplies(filename);
-            cargoCrane = GiantCargoCrane.of(shipSupplies);
+            shipSupplies = createShipSupplies(filename);
             return this;
         }
 
@@ -60,6 +68,7 @@ public class GiantCargoCraneController {
         }
 
         public GiantCargoCraneController build() {
+            var cargoCrane = craneType.createCrane(shipSupplies);
             return new GiantCargoCraneController(cargoCrane, instructions);
         }
 

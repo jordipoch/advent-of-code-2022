@@ -22,7 +22,6 @@ public class ShipSuppliesTest {
     @Test
     public void testToString() {
         var stringRepresentation = defaultShipSupplies.toString();
-        System.out.println(stringRepresentation);
         assertThat(stringRepresentation).hasToString("""
                     [D]   \s
                 [N] [C]   \s
@@ -37,7 +36,6 @@ public class ShipSuppliesTest {
         assertThat(crate).isEqualTo('N');
 
         var stringRepresentation = defaultShipSupplies.toString();
-        System.out.println(stringRepresentation);
         assertThat(stringRepresentation).hasToString("""
                     [D]   \s
                     [C]   \s
@@ -51,7 +49,6 @@ public class ShipSuppliesTest {
         defaultShipSupplies.pushCrateToStack('X', 3);
 
         var stringRepresentation = defaultShipSupplies.toString();
-        System.out.println(stringRepresentation);
         assertThat(stringRepresentation).hasToString("""
                     [D]   \s
                 [N] [C] [X]
@@ -66,7 +63,6 @@ public class ShipSuppliesTest {
         assertThat(crates).isEqualTo("NDP");
 
         var stringRepresentation = defaultShipSupplies.toString();
-        System.out.println(stringRepresentation);
         assertThat(stringRepresentation).hasToString("""
                     [D]   \s
                 [N] [C]   \s

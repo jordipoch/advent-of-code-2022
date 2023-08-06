@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class GiantCargoCraneTest {
+public class CrateMover9000Test {
 
     private GiantCargoCrane cargoCrane;
 
@@ -15,7 +15,7 @@ public class GiantCargoCraneTest {
                 .addStackOfCrates("DCM")
                 .addStackOfCrates("P")
                 .build();
-        cargoCrane = GiantCargoCrane.of(shipSupplies);
+        cargoCrane = GiantCargoCraneFactory.createCrateMover9000(shipSupplies);
     }
 
     @Test
@@ -24,8 +24,6 @@ public class GiantCargoCraneTest {
         checkCratesAtTheTopAfterInstruction("move 3 from 1 to 3", "CZ");
         checkCratesAtTheTopAfterInstruction("move 2 from 2 to 1", "MZ");
         checkCratesAtTheTopAfterInstruction("move 1 from 1 to 2", "CMZ");
-
-        System.out.println(cargoCrane);
     }
 
     private void checkCratesAtTheTopAfterInstruction(String instruction, String crates) {
