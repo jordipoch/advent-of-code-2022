@@ -1,43 +1,40 @@
-package com.challenge.aoc2022.day5;
+package com.challenge.aoc2022.day5.main;
 
-import com.challenge.aoc2022.day5.exception.ShipSuppliesFileParserException;
-import com.challenge.library.files.TextFileReader;
+import com.challenge.aoc2022.day5.ShipSupplies;
+import com.challenge.aoc2022.input.InputDataLoader;
 import com.challenge.library.string.StringUtils;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class ShipSuppliesFileParser {
-
+public class ShipSupplierCreator implements Supplier<ShipSupplies> {
     private static final Character EMPTY_CRATE = '_';
     public static final String CRATE_REGEX = "^\\[(\\p{Upper})]\\s?$";
-    private final Path filePath;
-    private ShipSuppliesFileParser(Path filePath) {
-        this.filePath = filePath;
+
+    private final InputDataLoader dataLoader;
+    public ShipSupplierCreator(InputDataLoader dataLoader) {
+        this.dataLoader = dataLoader;
     }
 
-    public static ShipSuppliesFileParser of(Path filePath) {
-        return new ShipSuppliesFileParser(filePath);
-    }
-    public List<String> parse() throws ShipSuppliesFileParserException {
-        var lines = readFromFile();
+    @Override
+    public ShipSupplies get() {
+        List<String> dataLines = dataLoader.loadData();
+        var stacksOfCrates = convertToStacksOfCrates(dataLines);
 
-        var shipSuppliesBuilders = createBuilders(lines);
-        fillBuilders(lines, shipSuppliesBuilders);
+        var shipSuppliesBuilder = ShipSupplies.builder();
+        stacksOfCrates.forEach(shipSuppliesBuilder::addStackOfCrates);
+
+        return shipSuppliesBuilder.build();
+    }
+
+    private List<String> convertToStacksOfCrates(List<String> dataLines) {
+        var shipSuppliesBuilders = createBuilders(dataLines);
+        fillBuilders(dataLines, shipSuppliesBuilders);
 
         return convertToResult(shipSuppliesBuilders);
-    }
-
-    private List<String> readFromFile() throws ShipSuppliesFileParserException {
-        try {
-            return TextFileReader.readAllLinesFromFile(filePath);
-        } catch (IOException e) {
-            throw new ShipSuppliesFileParserException(String.format("Cannot read file %s", filePath.getFileName().toString()), e);
-        }
     }
 
     private List<StringBuilder> createBuilders(List<String> lines) {
@@ -64,7 +61,7 @@ public class ShipSuppliesFileParser {
     }
 
     private void addCratesToBuilders(List<Character> crates, List<StringBuilder> builders) {
-        ListIterator<StringBuilder>  iterator = builders.listIterator();
+        ListIterator<StringBuilder> iterator = builders.listIterator();
         for (Character crate : crates) {
             StringBuilder builder = iterator.next();
             if (!EMPTY_CRATE.equals(crate))

@@ -2,7 +2,7 @@ package com.challenge.aoc2022.day5.crane;
 
 import com.challenge.aoc2022.day5.ShipSupplies;
 
-class GiantCargoCraneFactory {
+public class GiantCargoCraneFactory {
     private GiantCargoCraneFactory() {
     }
 

@@ -68,33 +68,12 @@ public class ShipSupplies {
     }
 
     public static class Builder {
-        private static final Path RESOURCE_PATH = Path.of("resources", "com", "challenge", "aoc2022", "day5");
-        private static final Path TEST = Path.of("src", "test");
-        private Path path = Path.of("src", "main").resolve(RESOURCE_PATH);
         private List<StackOfCrates> crates = new ArrayList<>();
-
 
         public Builder addStackOfCrates(String cratesAsString) {
             this.crates.add(StackOfCrates.of(cratesAsString));
             return this;
         }
-
-        public Builder forTest() {
-            path = TEST.resolve(RESOURCE_PATH);
-            return this;
-        }
-        public Builder fromFile(Path filePath) throws ShipSuppliesCreationException {
-            var parser = ShipSuppliesFileParser.of(filePath);
-            try {
-                crates = parser.parse().stream()
-                        .map(StackOfCrates::of)
-                        .toList();
-            } catch (ShipSuppliesFileParserException e) {
-                throw new ShipSuppliesCreationException("Error creating ship supplies from file", e);
-            }
-            return this;
-        }
-
         public ShipSupplies build() {
             return new ShipSupplies(crates);
         }
