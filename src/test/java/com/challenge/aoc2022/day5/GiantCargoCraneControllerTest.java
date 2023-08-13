@@ -1,7 +1,7 @@
 package com.challenge.aoc2022.day5;
 
-import com.challenge.aoc2022.day5.main.CraneInstructionsCreator;
-import com.challenge.aoc2022.day5.main.ShipSupplierCreator;
+import com.challenge.aoc2022.day5.main.CraneInstructionsSupplier;
+import com.challenge.aoc2022.day5.main.ShipSuppliesSupplier;
 import com.challenge.aoc2022.input.InputFileDataLoaderForTest;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeMethod;
@@ -11,20 +11,20 @@ import static com.challenge.aoc2022.day5.crane.GiantCargoCraneFactory.createCrat
 import static com.challenge.aoc2022.day5.crane.GiantCargoCraneFactory.createCrateMover9001;
 
 public class GiantCargoCraneControllerTest {
-    private ShipSupplierCreator shipSupplierCreator;
-    private CraneInstructionsCreator craneInstructionsCreator;
+    private ShipSuppliesSupplier shipSuppliesSupplier;
+    private CraneInstructionsSupplier craneInstructionsSupplier;
 
     @BeforeMethod
     public void setUp() {
-        shipSupplierCreator = new ShipSupplierCreator(new InputFileDataLoaderForTest(5, "ship_supplies.txt"));
-        craneInstructionsCreator = new CraneInstructionsCreator(new InputFileDataLoaderForTest(5, "instructions.txt"));
+        shipSuppliesSupplier = new ShipSuppliesSupplier(new InputFileDataLoaderForTest(5, "ship_supplies.txt"));
+        craneInstructionsSupplier = new CraneInstructionsSupplier(new InputFileDataLoaderForTest(5, "instructions.txt"));
     }
 
     @Test
     public void testProcessWithCrateMover9000() {
         var craneController = GiantCargoCraneController.of(
-                createCrateMover9000(shipSupplierCreator.get()),
-                craneInstructionsCreator.get()
+                createCrateMover9000(shipSuppliesSupplier.get()),
+                craneInstructionsSupplier.get()
         );
         Assertions.assertThat(craneController.process()).isEqualTo("CMZ");
     }
@@ -32,8 +32,8 @@ public class GiantCargoCraneControllerTest {
     @Test
     public void testProcessWithCrateMover9001() {
         var craneController = GiantCargoCraneController.of(
-                createCrateMover9001(shipSupplierCreator.get()),
-                craneInstructionsCreator.get()
+                createCrateMover9001(shipSuppliesSupplier.get()),
+                craneInstructionsSupplier.get()
         );
         Assertions.assertThat(craneController.process()).isEqualTo("MCD");
     }

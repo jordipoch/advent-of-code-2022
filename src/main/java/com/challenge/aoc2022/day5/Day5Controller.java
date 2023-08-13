@@ -1,5 +1,6 @@
 package com.challenge.aoc2022.day5;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -10,6 +11,7 @@ public class Day5Controller {
     private final Supplier<ShipSupplies> shipSuppliesSupplier;
     private final Supplier<List<CraneInstruction>> craneInstructionsSupplier;
 
+    @Inject
     public Day5Controller(Supplier<ShipSupplies> shipSuppliesSupplier, Supplier<List<CraneInstruction>> craneInstructionsSupplier) {
         this.shipSuppliesSupplier = shipSuppliesSupplier;
         this.craneInstructionsSupplier = craneInstructionsSupplier;

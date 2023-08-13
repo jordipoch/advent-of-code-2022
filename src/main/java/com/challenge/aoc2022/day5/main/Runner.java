@@ -1,7 +1,8 @@
 package com.challenge.aoc2022.day5.main;
 
 import com.challenge.aoc2022.day5.Day5Controller;
-import com.challenge.aoc2022.input.InputFileDataLoaderForProd;
+import com.challenge.aoc2022.day5.main.config.InjectorModule;
+import com.google.inject.Guice;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,9 +28,8 @@ public class Runner {
         return topMostCrates;
     }
 
-    private static Day5Controller createController() {
-        var shipSuppliesCreator = new ShipSupplierCreator(new InputFileDataLoaderForProd(5, "ship_supplies.txt"));
-        var craneInstructionsCreator = new CraneInstructionsCreator(new InputFileDataLoaderForProd(5, "instructions.txt"));
-        return Day5Controller.of(shipSuppliesCreator, craneInstructionsCreator);
+    private Day5Controller createController() {
+        var injector = Guice.createInjector(new InjectorModule());
+        return injector.getInstance(Day5Controller.class);
     }
 }
