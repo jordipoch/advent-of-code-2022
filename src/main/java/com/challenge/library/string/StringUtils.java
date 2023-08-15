@@ -8,6 +8,13 @@ public class StringUtils {
     private StringUtils() {
     }
 
+    public static List<Character> stringToCharList(String s) {
+        Objects.requireNonNull(s);
+        return s.chars()
+                .mapToObj(i -> (char) i)
+                .toList();
+    }
+
     public static List<String> partitionStringBySize(String s, int chunkSize) {
         Objects.requireNonNull(s);
         if (chunkSize <= 0)

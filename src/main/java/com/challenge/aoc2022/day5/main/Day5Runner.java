@@ -6,10 +6,10 @@ import com.google.inject.Guice;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Runner {
+public class Day5Runner {
     private static final Logger logger = LogManager.getLogger();
     public static void main(String[] args) {
-        var runner = new Runner();
+        var runner = new Day5Runner();
         runner.runPart1();
         runner.runPart2();
     }

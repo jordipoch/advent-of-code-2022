@@ -1,5 +1,6 @@
 package com.challenge.aoc2022.input;
 
+import com.challenge.aoc2022.input.exception.DataLoadingException;
 import com.challenge.library.files.TextFileReader;
 
 import java.io.IOException;
