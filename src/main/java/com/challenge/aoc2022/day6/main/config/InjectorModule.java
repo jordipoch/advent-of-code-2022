@@ -1,7 +1,7 @@
 package com.challenge.aoc2022.day6.main.config;
 
-import com.challenge.aoc2022.day6.MarkerPositionCalculator;
-import com.challenge.aoc2022.day6.MarkerPositionCalculatorImplUsingStreams;
+import com.challenge.aoc2022.day6.factory.MarkerPositionCalculatorFactory;
+import com.challenge.aoc2022.day6.factory.MarkerPositionCalculatorUsingStreamsFactory;
 import com.challenge.aoc2022.day6.main.PacketDataSupplier;
 import com.challenge.aoc2022.input.InputDataLoader;
 import com.challenge.aoc2022.input.InputFileDataLoaderForProd;
@@ -23,7 +23,6 @@ public class InjectorModule extends AbstractModule {
         bind(new TypeLiteral<Supplier<String>>() {})
                 .to(PacketDataSupplier.class);
 
-        bind(MarkerPositionCalculator.class)
-                .to(MarkerPositionCalculatorImplUsingStreams.class);
+        bind(MarkerPositionCalculatorFactory.class).to(MarkerPositionCalculatorUsingStreamsFactory.class);
     }
 }

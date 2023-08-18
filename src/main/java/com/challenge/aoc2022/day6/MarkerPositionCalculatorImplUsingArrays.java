@@ -1,12 +1,16 @@
 package com.challenge.aoc2022.day6;
 
-public class MarkerPositionCalculatorImplUsingArrays implements MarkerPositionCalculator {
+public class MarkerPositionCalculatorImplUsingArrays extends AbstractMarkerPositionCalculator {
+    public MarkerPositionCalculatorImplUsingArrays(int markerSize) {
+        super(markerSize);
+    }
+
     @Override
     public int calculateMarkerPosition(String data) {
-        if (data.length() >= MARKER_SIZE) {
+        if (data.length() >= markerSize) {
             char[] chars = data.toCharArray();
-            for (int i = MARKER_SIZE; i <= chars.length; i++) {
-                if (areAllCharactersDifferent(chars, i - MARKER_SIZE, i))
+            for (int i = markerSize; i <= chars.length; i++) {
+                if (areAllCharactersDifferent(chars, i - markerSize, i))
                     return i;
             }
         }

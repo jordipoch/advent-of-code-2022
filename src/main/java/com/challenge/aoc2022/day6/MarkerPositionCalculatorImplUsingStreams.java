@@ -3,7 +3,11 @@ package com.challenge.aoc2022.day6;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarkerPositionCalculatorImplUsingStreams implements MarkerPositionCalculator {
+public class MarkerPositionCalculatorImplUsingStreams extends AbstractMarkerPositionCalculator {
+    public MarkerPositionCalculatorImplUsingStreams(int markerSize) {
+        super(markerSize);
+    }
+
     @Override
     public int calculateMarkerPosition(String data) {
         return createGroups(data).stream()
@@ -15,8 +19,8 @@ public class MarkerPositionCalculatorImplUsingStreams implements MarkerPositionC
 
     private List<CharacterGroup> createGroups(String data) {
         List<CharacterGroup> groups = new ArrayList<>();
-        for (int i = MARKER_SIZE; i <= data.length(); i++) {
-            var s = data.substring(i - MARKER_SIZE, i);
+        for (int i = markerSize; i <= data.length(); i++) {
+            var s = data.substring(i - markerSize, i);
             var group = CharacterGroup.of(s, i);
             groups.add(group);
         }

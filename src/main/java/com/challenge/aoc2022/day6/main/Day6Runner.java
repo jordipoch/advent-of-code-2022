@@ -12,13 +12,22 @@ public class Day6Runner {
     public static void main(String[] args) {
         var runner = new Day6Runner();
         runner.runPart1();
+        runner.runPart2();
     }
 
     public int runPart1() {
         var controller = createController();
 
-        var markerPosition = controller.calculateMarkerPosition();
+        var markerPosition = controller.calculateMarkerPosition(4);
         logger.info("The start-of-packet marker ends at position {}", markerPosition);
+        return markerPosition;
+    }
+
+    public int runPart2() {
+        var controller = createController();
+
+        var markerPosition = controller.calculateMarkerPosition(14);
+        logger.info("The start-of-message marker ends at position {}", markerPosition);
         return markerPosition;
     }
 

@@ -1,24 +1,43 @@
 package com.challenge.aoc2022.day6;
 
+import com.challenge.aoc2022.day6.factory.MarkerPositionCalculatorFactory;
+import com.challenge.aoc2022.day6.factory.MarkerPositionCalculatorUsingArraysFactory;
+import com.challenge.aoc2022.day6.factory.MarkerPositionCalculatorUsingStreamsFactory;
 import org.assertj.core.api.Assertions;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class Day6ControllerTest {
 
-    @Test
-    public void testCalculateMarkerPositionUsingArrays() {
-        MarkerPositionCalculator markerPositionCalculator = new MarkerPositionCalculatorImplUsingArrays();
-        var controller = new Day6Controller(() -> "nppdvjthqldpwncqszvftbrmjlhg", markerPositionCalculator);
+    @Test (dataProvider = "calculate marker position test data")
+    public void testCalculateMarkerPositionUsingStreams(String message, int markerSize, int expectedPosition) {
+        var controller = new Day6Controller(() -> message, new MarkerPositionCalculatorUsingStreamsFactory());
 
-        Assertions.assertThat(controller.calculateMarkerPosition()).isEqualTo(6);
+        Assertions.assertThat(controller.calculateMarkerPosition(markerSize)).isEqualTo(expectedPosition);
     }
 
-    @Test
-    public void testCalculateMarkerPositionUsingStreams() {
-        MarkerPositionCalculator markerPositionCalculator = new MarkerPositionCalculatorImplUsingStreams();
-        var controller = new Day6Controller(() -> "bvwbjplbgvbhsrlpgdmjqwftvncz", markerPositionCalculator);
+    @Test (dataProvider = "calculate marker position test data")
+    public void testCalculateMarkerPositionUsingArrays(String message, int markerSize, int expectedPosition) {
+        var controller = new Day6Controller(() -> message, new MarkerPositionCalculatorUsingArraysFactory());
 
-        Assertions.assertThat(controller.calculateMarkerPosition()).isEqualTo(5);
+        Assertions.assertThat(controller.calculateMarkerPosition(markerSize)).isEqualTo(expectedPosition);
     }
 
+    @DataProvider(name = "calculate marker position test data")
+    protected Iterator<Object[]> getTestsData() {
+        return Arrays.asList(new Object[][] {
+                {"bvwbjplbgvbhsrlpgdmjqwftvncz", 4, 5},
+                {"nppdvjthqldpwncqszvftbrmjlhg", 4, 6},
+                {"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 4, 10},
+                {"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 4, 11},
+                {"mjqjpqmgbljsphdztnvjfqwrcgsmlb", 14, 19},
+                {"bvwbjplbgvbhsrlpgdmjqwftvncz", 14, 23},
+                {"nppdvjthqldpwncqszvftbrmjlhg", 14, 23},
+                {"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 14, 29},
+                {"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 14, 26}
+        }).iterator();
+    }
 }

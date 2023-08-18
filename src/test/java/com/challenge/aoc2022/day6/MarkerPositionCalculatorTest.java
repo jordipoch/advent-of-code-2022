@@ -19,14 +19,4 @@ public abstract class MarkerPositionCalculatorTest {
                 {"abcbcdaf", 7}
         }).iterator();
     }
-
-    @DataProvider(name = "complex tests")
-    protected Iterator<Object[]> getComplexTestsData() {
-        return Arrays.asList(new Object[][] {
-                {"bvwbjplbgvbhsrlpgdmjqwftvncz", 5},
-                {"nppdvjthqldpwncqszvftbrmjlhg", 6},
-                {"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10},
-                {"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11},
-        }).iterator();
-    }
 }

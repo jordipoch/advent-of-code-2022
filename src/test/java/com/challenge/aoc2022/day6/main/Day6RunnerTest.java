@@ -9,4 +9,10 @@ public class Day6RunnerTest {
         var runner = new Day6Runner();
         Assertions.assertThat(runner.runPart1()).isEqualTo(1833);
     }
+
+    @Test
+    public void testRunPart2() {
+        var runner = new Day6Runner();
+        Assertions.assertThat(runner.runPart2()).isEqualTo(3425);
+    }
 }
