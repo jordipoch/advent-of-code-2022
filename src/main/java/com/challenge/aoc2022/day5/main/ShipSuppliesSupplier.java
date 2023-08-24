@@ -6,12 +6,14 @@ import com.challenge.aoc2022.input.InputDataLoader;
 import com.challenge.library.string.StringUtils;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+@Singleton
 public class ShipSuppliesSupplier implements Supplier<ShipSupplies> {
     private static final Character EMPTY_CRATE = '_';
     public static final String CRATE_REGEX = "^\\[(\\p{Upper})]\\s?$";
