@@ -5,7 +5,7 @@ import com.challenge.aoc2022.day7.filesystem.Filesystem;
 public class MoveToRootCommand implements Command {
     @Override
     public void execute(Filesystem filesystem) {
-        filesystem.moveRootFolder();
+        filesystem.moveToRootFolder();
     }
 
     @Override

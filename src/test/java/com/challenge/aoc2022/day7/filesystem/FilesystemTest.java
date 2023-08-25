@@ -3,12 +3,15 @@ package com.challenge.aoc2022.day7.filesystem;
 import com.challenge.aoc2022.day7.filesystem.exception.ElementAlreadyExistsException;
 import com.challenge.aoc2022.day7.filesystem.exception.FilesystemException;
 import com.challenge.aoc2022.day7.filesystem.exception.FolderNotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FilesystemTest {
+    private static final Logger logger = LogManager.getLogger();
     private Filesystem filesystem;
 
     @BeforeMethod
@@ -17,93 +20,11 @@ public class FilesystemTest {
     }
 
     @Test
-    public void testGetCurrentFolderShouldBeRootUponCreation() {
-        assertThat(filesystem.getCurrentFolder()).isEqualTo(filesystem.getRootFolder());
-    }
-
-    @Test
-    public void testCreateFilesInRootFolder() throws FilesystemException {
-        filesystem.createFile("a.txt", 44);
-        filesystem.createFile("b.txt", 16);
-        filesystem.createFile("c.txt", 10);
-
-        System.out.println(filesystem);
-        assertThat(filesystem).hasToString("""
-                - / (dir, size=70)
-                \t- a.txt (file, size=44)
-                \t- b.txt (file, size=16)
-                \t- c.txt (file, size=10)"""
-        );
-    }
-
-    @Test
-    public void testCreateDirectoryWithFiles() throws FilesystemException {
-        filesystem.createFile("a.txt", 44);
-        filesystem.createFile("b.txt", 16);
-        filesystem.createFolder("folder 1");
-        filesystem.moveToSubFolder("folder 1");
-        filesystem.createFile("c.txt", 10);
-        filesystem.createFile("d.txt", 20);
-
-
-        System.out.println(filesystem);
-        assertThat(filesystem).hasToString("""
-                - / (dir, size=90)
-                \t- a.txt (file, size=44)
-                \t- b.txt (file, size=16)
-                \t- folder 1 (dir, size=30)
-                \t\t- c.txt (file, size=10)
-                \t\t- d.txt (file, size=20)"""
-        );
-    }
-
-    @Test
-    public void testCreateEmptyDirectory() throws FilesystemException {
-        filesystem.createFile("a.txt", 44);
-        filesystem.createFolder("folder 1");
-        filesystem.createFile("b.txt", 20);
-
-
-        System.out.println(filesystem);
-        assertThat(filesystem).hasToString("""
-                - / (dir, size=64)
-                \t- a.txt (file, size=44)
-                \t- folder 1 (dir, size=0)
-                \t- b.txt (file, size=20)"""
-        );
-    }
-
-    @Test
-    public void testWithTwoLevelHierarchy() throws FilesystemException {
-        filesystem.createFile("a.txt", 44);
-        filesystem.createFolder("folder 1");
-        filesystem.moveToSubFolder("folder 1");
-        filesystem.createFolder("folder 2");
-        filesystem.moveToSubFolder("folder 2");
-        filesystem.createFile("b.txt", 20);
-        filesystem.createFile("c.txt", 12);
-        filesystem.moveToParentFolder();
-        filesystem.createFolder("folder 3");
-        filesystem.moveToSubFolder("folder 3");
-        filesystem.createFile("d.txt", 8);
-        filesystem.createFile("e.txt", 16);
-        filesystem.moveRootFolder();
-        filesystem.createFile("f.txt", 25);
-
-
-        System.out.println(filesystem);
-        assertThat(filesystem).hasToString("""
-                - / (dir, size=125)
-                \t- a.txt (file, size=44)
-                \t- folder 1 (dir, size=56)
-                \t\t- folder 2 (dir, size=32)
-                \t\t\t- b.txt (file, size=20)
-                \t\t\t- c.txt (file, size=12)
-                \t\t- folder 3 (dir, size=24)
-                \t\t\t- d.txt (file, size=8)
-                \t\t\t- e.txt (file, size=16)
-                \t- f.txt (file, size=25)"""
-        );
+    public void testFileSystemCreation() throws FilesystemException {
+        createAndFillFilesystem();
+        logger.debug("Filesystem contents: {}{}", System.lineSeparator(), filesystem);
+        assertThat(filesystem.getSpaceUsed()).isEqualTo(48_381_165);
+        assertThat(filesystem).hasToString(getExpectedStringRepresentation());
     }
 
     @Test
@@ -148,38 +69,61 @@ public class FilesystemTest {
 
     @Test
     public void testFindElementsWithResults2() throws FilesystemException {
-        filesystem.createFile("a.txt", 44);
-        filesystem.createFolder("folder 1");
-        filesystem.moveToSubFolder("folder 1");
-        filesystem.createFolder("folder 2");
-        filesystem.moveToSubFolder("folder 2");
-        filesystem.createFile("b.txt", 20);
-        filesystem.createFile("c.txt", 12);
-        filesystem.moveToParentFolder();
-        filesystem.createFolder("folder 3");
-        filesystem.moveToSubFolder("folder 3");
-        filesystem.createFile("d.txt", 8);
-        filesystem.createFile("e.txt", 16);
-        filesystem.moveRootFolder();
-        filesystem.createFile("f.txt", 25);
+        createAndFillFilesystem();
+        logger.debug("Filesystem contents: {}{}", System.lineSeparator(), filesystem);
 
-        System.out.println(filesystem);
-
-        var results = filesystem.findElements(e -> e.getSize() <= 100 && e.isFolder());
-        assertThat(results).extracting(Element::getName).containsExactlyInAnyOrder("folder 1", "folder 2", "folder 3");
+        var results = filesystem.findElements(e -> e.getSize() <= 100_000 && e.isFolder());
+        assertThat(results).extracting(Element::getName).containsExactlyInAnyOrder("a", "e");
     }
 
     @Test
     public void testFindElementsWithNoResults() throws FilesystemException {
-        filesystem.createFile("a.txt", 44);
-        filesystem.createFile("b.txt", 20);
-        filesystem.createFolder("folder");
-        filesystem.moveToSubFolder("folder");
-        filesystem.createFile("a.txt", 15);
-
-        System.out.println(filesystem);
+        createAndFillFilesystem();
+        logger.debug("Filesystem contents: {}{}", System.lineSeparator(), filesystem);
 
         var results = filesystem.findElements(e -> e.getName().equals("c.txt"));
         assertThat(results).extracting(Element::getName).isEmpty();
+    }
+
+    private void createAndFillFilesystem() throws FilesystemException {
+        filesystem = new Filesystem();
+
+        filesystem.moveToRootFolder();
+        filesystem.createFolder("a");
+        filesystem.createFile("b.txt", 14_848_514);
+        filesystem.createFile("c.dat", 8_504_156);
+        filesystem.createFolder("d");
+        filesystem.moveToSubFolder("a");
+        filesystem.createFolder("e");
+        filesystem.createFile("f", 29_116);
+        filesystem.createFile("g", 2_557);
+        filesystem.createFile("h.lst", 62_596);
+        filesystem.moveToSubFolder("e");
+        filesystem.createFile("i", 584);
+        filesystem.moveToParentFolder();
+        filesystem.moveToParentFolder();
+        filesystem.moveToSubFolder("d");
+        filesystem.createFile("j", 4_060_174);
+        filesystem.createFile("d.log", 8_033_020);
+        filesystem.createFile("d.ext", 5_626_152);
+        filesystem.createFile("k", 7_214_296);
+    }
+
+    private String getExpectedStringRepresentation() {
+        return """
+                - / (dir, size=48381165)
+                \t- a (dir, size=94853)
+                \t\t- e (dir, size=584)
+                \t\t\t- i (file, size=584)
+                \t\t- f (file, size=29116)
+                \t\t- g (file, size=2557)
+                \t\t- h.lst (file, size=62596)
+                \t- b.txt (file, size=14848514)
+                \t- c.dat (file, size=8504156)
+                \t- d (dir, size=24933642)
+                \t\t- j (file, size=4060174)
+                \t\t- d.log (file, size=8033020)
+                \t\t- d.ext (file, size=5626152)
+                \t\t- k (file, size=7214296)""";
     }
 }

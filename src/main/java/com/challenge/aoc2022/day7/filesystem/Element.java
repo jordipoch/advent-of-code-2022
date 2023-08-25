@@ -4,7 +4,7 @@ public abstract class Element {
     protected final String name;
     protected int size;
 
-    public Element(String name, int size) {
+    protected Element(String name, int size) {
         this.name = name;
         this.size = size;
     }

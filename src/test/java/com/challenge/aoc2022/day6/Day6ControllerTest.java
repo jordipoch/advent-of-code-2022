@@ -10,20 +10,22 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class Day6ControllerTest {
 
     @Test (dataProvider = "calculate marker position test data")
     public void testCalculateMarkerPositionUsingStreams(String message, int markerSize, int expectedPosition) {
         var controller = new Day6Controller(() -> message, new MarkerPositionCalculatorUsingStreamsFactory());
 
-        Assertions.assertThat(controller.calculateMarkerPosition(markerSize)).isEqualTo(expectedPosition);
+        assertThat(controller.calculateMarkerPosition(markerSize)).isEqualTo(expectedPosition);
     }
 
     @Test (dataProvider = "calculate marker position test data")
     public void testCalculateMarkerPositionUsingArrays(String message, int markerSize, int expectedPosition) {
         var controller = new Day6Controller(() -> message, new MarkerPositionCalculatorUsingArraysFactory());
 
-        Assertions.assertThat(controller.calculateMarkerPosition(markerSize)).isEqualTo(expectedPosition);
+        assertThat(controller.calculateMarkerPosition(markerSize)).isEqualTo(expectedPosition);
     }
 
     @DataProvider(name = "calculate marker position test data")

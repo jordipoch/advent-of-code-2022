@@ -40,7 +40,7 @@ public class Filesystem {
         currentFolder = currentFolder.getParent();
     }
 
-    public void moveRootFolder() {
+    public void moveToRootFolder() {
         currentFolder = rootFolder;
     }
 
@@ -53,6 +53,10 @@ public class Filesystem {
         result.addAll(rootFolder.findElements(condition));
 
         return result;
+    }
+
+    public int getSpaceUsed() {
+        return rootFolder.getSize();
     }
 
     @Override
