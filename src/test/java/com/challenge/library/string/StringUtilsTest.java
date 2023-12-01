@@ -47,6 +47,23 @@ public class StringUtilsTest {
         assertThatNullPointerException().isThrownBy(() -> StringUtils.stringToCharList(null));
     }
 
+    @Test
+    public void testStringToDigitList() {
+        assertThat(StringUtils.stringToDigitList("1234567890")).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
+    }
+
+    @Test
+    public void testStringToDigitListWhenNullString() {
+        assertThatNullPointerException().isThrownBy(() -> StringUtils.stringToDigitList(null));
+    }
+
+    @Test
+    public void testStringToDigitListWhenNoDigitCharacters() {
+        assertThatIllegalArgumentException().
+                isThrownBy(() -> StringUtils.stringToDigitList("123a"))
+                .withMessage("Invalid digit (a)");
+    }
+
     @DataProvider(name = "data for stringToCharList test")
     protected Iterator<Object[]> getStringToCharListTestData() {
         return Arrays.asList(new Object[][] {

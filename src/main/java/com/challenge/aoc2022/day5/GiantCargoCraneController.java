@@ -20,9 +20,9 @@ public class GiantCargoCraneController {
     }
 
     public String process() {
-        logger.info("Status of ship supplies before processing the instructions:\n{}", cargoCrane);
+        logger.debug("Status of ship supplies before processing the instructions:\n{}", cargoCrane);
         instructions.forEach(cargoCrane::processInstruction);
-        logger.info("Status of ship supplies after processing the instructions:\n{}", cargoCrane);
+        logger.debug("Status of ship supplies after processing the instructions:\n{}", cargoCrane);
         return cargoCrane.getTopMostCrates();
     }
 }
